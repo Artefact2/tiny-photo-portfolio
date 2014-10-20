@@ -51,8 +51,8 @@ foreach($argv as $tfile) {
 		'data-copyright' => $exif['Image']['Copyright'],
 		'data-exposuretime' => $exif['Photo']['ExposureTime'][0][0].'/'.$exif['Photo']['ExposureTime'][0][1],
 		'data-aperture' => 'f/'.($exif['Photo']['FNumber'][0][0] / $exif['Photo']['FNumber'][0][1]),
-		'data-iso' => 'ISO '.$exif['Photo']['ISOSpeedRatings'][0],
-		'data-focallength' => ($exif['Photo']['FocalLength'][0][0] / $exif['Photo']['FocalLength'][0][1]).' mm',
+		'data-iso' => 'ISO'.$exif['Photo']['ISOSpeedRatings'][0],
+		'data-focallength' => ($exif['Photo']['FocalLength'][0][0] / $exif['Photo']['FocalLength'][0][1]).'mm',
 	]);
 
 	$a = $li->appendCreate('a', [
