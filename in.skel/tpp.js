@@ -75,16 +75,13 @@ $(function() {
 							li.data('description')
 								+ ' — ' + 
 								li.data('focallength')
-								+ '; ' +
+								+ ' ' +
 								li.data('aperture')
-								+ '; ' +
+								+ ' ' +
 								li.data('exposuretime')
-								+ 's; ' +
+								+ 's ' +
 								li.data('iso')
-								+ ' — ' +
-								li.data('author')
-								+ ' — ' + li.data('copyright')
-						);
+						).prop('title', li.data('author') + "\n" + li.data('copyright'));
 
 						if(popstating === 0) {
 							history.pushState(i, null, "#" + i);
