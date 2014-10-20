@@ -6,7 +6,15 @@
  * To Public License, Version 2, as published by Sam Hocevar. See
  * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
+if(typeof history === 'undefined') {
+	history = {
+		pushState: function() {},
+	};
+}
+
 $(function() {
+
+	var popstating = 0;
 
 	var h = new Hammer($("body").get(0));
 	h.on('swipeleft', function() {
@@ -24,6 +32,17 @@ $(function() {
 	});
 	Mousetrap.bind('right', function() {
 		$("a#next").click();
+	});
+
+	$(window).on('popstate', function(e) {
+		++popstating;
+		var i = e.originalEvent.state;
+
+		if(i === null) {
+			$("div#dc").click();
+		} else {
+			$("ul#photos").children('li').eq(i).children('a').click();
+		}
 	});
 
 	tpp_load_image = function(div, li) {
@@ -66,6 +85,11 @@ $(function() {
 								li.data('author')
 								+ ' — ' + li.data('copyright')
 						);
+
+						if(popstating === 0) {
+							history.pushState(i, null, "#" + i);
+						} else --popstating;
+
 						frame.css('background-image', 'url("' + fullres + '")');
 						frame.fadeIn(500);
 					});
@@ -86,49 +110,62 @@ $(function() {
 
 		var a = $(this);
 		var li = a.parent();
+		var dc;
 		a.blur();
 
-		$("div#dc").remove();
-		var dc = $(document.createElement('div'));
-		dc.prop('id', 'dc');
-		dc.hide();
-		dc.click(function() {
-			dc.fadeOut(250, function() {
-				dc.remove();
+		if((dc = $("div#dc")).length === 0) {
+			dc = $(document.createElement('div'));
+			dc.prop('id', 'dc');
+			dc.hide();
+			dc.click(function() {
+				if(popstating === 0) {
+					history.pushState(null, null, '#');
+				} else --popstating;
+
+				dc.fadeOut(250, function() {
+					dc.remove();
+				});
 			});
-		});
 
-		var div = $(document.createElement('div'));
-		div.prop('id', 'detail');
-		dc.append(div);
+			var div = $(document.createElement('div'));
+			div.prop('id', 'detail');
+			dc.append(div);
 
-		var fdiv = $(document.createElement('div'));
-		fdiv.prop('id', 'frame');
-		fdiv.hide();
-		div.append(fdiv);
+			var fdiv = $(document.createElement('div'));
+			fdiv.prop('id', 'frame');
+			fdiv.hide();
+			div.append(fdiv);
 
-		var p = $(document.createElement('p'));
-		p.prop('id', 'exif');
-		fdiv.append(p);
+			var p = $(document.createElement('p'));
+			p.prop('id', 'exif');
+			fdiv.append(p);
 
-		var sdiv = $(document.createElement('div'));
-		sdiv.prop('id', 'spinner');
-		div.append(sdiv);
+			var sdiv = $(document.createElement('div'));
+			sdiv.prop('id', 'spinner');
+			div.append(sdiv);
 
-		var a = $(document.createElement('a'));
-		a.prop('id', 'prev');
-		a.append($(document.createElement('span')).text('←'));
-		dc.append(a);
+			var a = $(document.createElement('a'));
+			a.prop('id', 'prev');
+			a.append($(document.createElement('span')).text('←'));
+			dc.append(a);
 
-		a = $(document.createElement('a'));
-		a.prop('id', 'next');
-		a.append($(document.createElement('span')).text('→'));
-		dc.append(a);
+			a = $(document.createElement('a'));
+			a.prop('id', 'next');
+			a.append($(document.createElement('span')).text('→'));
+			dc.append(a);
 
-		$("body").append(dc);
-		dc.fadeIn(250);
+			$("body").append(dc);
+			dc.fadeIn(250);
+		}
 
 		tpp_load_image(dc, li);
 	});
 
+	var hash;
+	console.log(window.location.hash);
+	if(window.location.hash.length >= 2 && 
+	   !isNaN(hash = parseInt(window.location.hash.substring(1)))) {
+		++popstating;
+		$("ul#photos").children('li').eq(hash).children('a').click();
+	}
 });
