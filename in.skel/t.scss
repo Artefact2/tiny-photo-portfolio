@@ -1,0 +1,235 @@
+@mixin prefixize($prop, $value) {
+	#{$prop}: $value;
+	-moz-#{$prop}: $value;
+	-webkit-#{$prop}: $value;
+	-o-#{$prop}: $value;
+}
+
+@mixin keyframes($name) {
+	@keyframes $name {
+		@content;
+	}
+
+	@-moz-keyframes $name {
+		@content;
+	}
+
+	@-webkit-keyframes $name {
+		@content;
+	}
+
+	@-o-keyframes $name {
+		@content;
+	}
+}
+
+@include keyframes(rotatecw) {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(359deg); }
+}
+
+
+
+
+body {
+	background: url("bg.png"), white;
+	font-family: "Old Standard TT", serif;
+}
+
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 20em;
+	height: 100%;
+	padding: 1em;
+
+	line-height: 3em;
+	text-align: right;
+
+	&> h1 {
+		font-size: 3em;
+	}
+
+	&> p {
+		line-height: 2em;
+		font-size: 1.25em;
+	}
+
+	&> ul {
+		display: inline-block;
+		text-align: right;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+
+		&> li {
+			&:after {
+				content: " — ";
+			}
+
+			font-size: 1.5em;
+		}
+	}
+
+	background: url("bg2.png"), black;
+	color: white;
+
+	a {
+		@include prefixize(transition, color .25s);
+
+		&, &:visited {
+			color: white;
+		}
+
+		&:hover, &:focus {
+			color: hsl(210, 100%, 80%);
+		}
+
+		&:active {
+			color: hsl(0, 100%, 50%);
+		}
+	}
+}
+
+nav {
+	margin-left: 22em;
+}
+
+ul#photos {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	line-height: 0;
+	max-width: 900px;
+	text-align: left;
+
+	&> li {
+		display: inline-block;
+		margin: .5em;
+		padding: 0;
+		background-size: cover;
+		background-position: center center;
+		background-repeat: no-repeat;
+		position: relative;
+
+		&.landscape { width: 800px; height: 15em; }
+		&.portrait { width: 15em; height: 800px; }
+		&.square { width: 15em; height: 15em; }
+
+		@include prefixize(transition, opacity .5s);
+		opacity: 1;
+
+		&:hover {
+			opacity: 0.7;
+		}
+
+		&> a {
+			cursor: pointer;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
+
+div#dc {
+	background: hsla(0, 0%, 0%, .95);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+
+	&> a {
+		display: block;
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: 10em;
+
+		cursor: pointer;
+
+		&#prev { left: 0; }
+		&#next { right: 0; }
+
+		&> span {
+			display: block;
+			text-align: center;
+			font-size: 10em;
+			line-height: 10em;
+			position: absolute;
+			width: 100%;
+			left: 0;
+			top: 50%;
+			height: 10em;
+			margin-top: -5em;
+		}
+
+		color: hsl(0, 0%, 100%);
+		opacity: 0;
+		@include prefixize(transition, opacity 1s);
+
+		&:hover, &:focus, &:active {
+			opacity: 1;
+		}
+	}
+}
+
+div#detail {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	display: table;
+	border-spacing: 10em 3em;
+
+	&> div {
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+	}
+
+	&> div#spinner:before {
+		font-size: 5em;
+		content: "⟳";
+		color: hsl(0, 0%, 100%);
+		transform-origin: center center;
+
+		@include prefixize(animation, rotatecw 1s infinite);
+	}
+
+	&> div#frame {
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center center;
+		position: relative;
+
+		&> p#exif {
+			font-size: 1.25em;
+			font-style: italic;
+			margin: 0;
+			padding: 0;
+			line-height: 1.5em;
+			width: 100%;
+			text-align: center;
+			height: 1.5em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			color: hsl(0, 0%, 100%);
+			opacity: .5;
+
+			@include prefixize(transition, opacity .5s);
+			&:hover { opacity: .9; }
+
+			position: absolute;
+			bottom: -1.75em;
+		}
+	}
+}
