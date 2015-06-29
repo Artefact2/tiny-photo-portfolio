@@ -1,4 +1,6 @@
 .sass-cache/
 in/
 out/
-
+tmp/
+img/*
+!img/.empty

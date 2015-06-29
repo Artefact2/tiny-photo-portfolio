@@ -18,9 +18,7 @@ Usage
 
 * Alter contents of `in` files to taste.
 
-* Put your `.tif` photos in the `in` directory. For optimal results,
-  make sure they have EXIF data (including title, author, and
-  copyright).
+* Put your photos in the `img` directory.
 
 * Run `make`.
 
@@ -44,6 +42,6 @@ These are only needed for generating the static pages. They are not
 required on the server that will be hosting the pages.
 
 * PHP ≥ 5.6 (CLI only)
-* Exiv2
 * ImageMagick
 * Sass
+* libbpg
