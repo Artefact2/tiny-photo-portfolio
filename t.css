@@ -1,0 +1,7 @@
+body { background-color: #e6e6e6; }
+ul#photos { padding: 0; margin: 1em; text-align: center; }
+ul#photos > li { list-style-type: none; display: inline-block; margin: 1em; padding: 1em; background-color: white; transition: background-color .5s, opacity 2s, transform .5s; }
+ul#photos > li:hover { background-color: black; transform: rotate(0deg) translateX(0px) translateY(0px) !important; }
+ul#photos > li.loading { background-color: white; }
+div#fullview { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); }
+div#fullview > canvas { position: relative; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); max-width: 90%; max-height: 90%; }
