@@ -3,6 +3,8 @@ tiny-photo-portfolio
 
 A minimalist static photography portfolio.
 
+**[See a live demo here.](https://artefact2.github.io/tiny-photo-portfolio/)**
+
 Released under the WTFPLv2 license.
 
 Uses Mousetrap.js, released under the Apache 2.0 license:
